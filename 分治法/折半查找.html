@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>折半查找</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    input[type="text"],
+    select {
+      width: 80%;
+      max-width: 300px;
+      /* 设置输入框和选择框的最大宽度 */
+      margin: 10px auto;
+      padding: 10px;
+      font-size: 16px;
+    }
+
+    #output {
+      width: 80%;
+      margin: 10px auto;
+      padding: 10px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      display: block;
+      margin: 10px auto;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+  </style>
+  <script>
+    function binarySearch(arr, target) {
+      let left = 0;
+      let right = arr.length - 1;
+      let comparisons = 0;
+
+      while (left <= right) {
+        const mid = Math.floor((left + right) / 2);
+        comparisons++;
+
+        if (arr[mid] === target) {
+          return comparisons;
+        }
+
+        if (arr[mid] < target) {
+          left = mid + 1;
+        } else {
+          right = mid - 1;
+        }
+      }
+
+      return -1; // 如果未找到目标元素，则返回-1
+    }
+
+    function performBinarySearch() {
+      const numbersStr = document.getElementById("numbers").value;
+      const numbersArr = numbersStr.split(",").map((num) => parseInt(num));
+      const target = parseInt(document.getElementById("target").value);
+
+      // 检查是否降序排序
+      const isDescending = document.getElementById("sortOrder").value === "descending";
+      if (isDescending) {
+        numbersArr.reverse();
+      }
+
+      const comparisons = binarySearch(numbersArr, target);
+      if (comparisons === -1) {
+        document.getElementById("result").innerHTML = `未找到目标元素 ${target}`;
+      } else {
+        document.getElementById("result").innerHTML = `在进行二分法查找时，需要经过 ${comparisons} 次比较`;
+      }
+    }
+  </script>
+</head>
+
+<body>
+  <h2>折半查找</h2>
+  <label for="numbers">输入排序后的数字（以英文逗号分隔）：</label>
+  <br>
+  <input type="text" id="numbers">
+  <br><br>
+  <label for="target">输入要查找的元素：</label>
+  <br>
+  <input type="text" id="target">
+  <br><br>
+  <label for="sortOrder">选择排序顺序：</label>
+  <select id="sortOrder">
+    <option value="ascending">升序</option>
+    <option value="descending">降序</option>
+  </select>
+  <br><br>
+  <button onclick="performBinarySearch()">开始查找</button>
+  <p id="result"></p>
+  <script>
+    !function (p) { "use strict"; !function (t) { var s = window, e = document, i = p, c = "".concat("https:" === e.location.protocol ? "https://" : "http://", "sdk.51.la/js-sdk-pro.min.js"), n = e.createElement("script"), r = e.getElementsByTagName("script")[0]; n.type = "text/javascript", n.setAttribute("charset", "UTF-8"), n.async = !0, n.src = c, n.id = "LA_COLLECT", i.d = n; var o = function () { s.LA.ids.push(i) }; s.LA ? s.LA.ids && o() : (s.LA = p, s.LA.ids = [], o()), r.parentNode.insertBefore(n, r) }() }({ id: "KIyLI1vHBwGjk0MP", ck: "KIyLI1vHBwGjk0MP", autoTrack: true, hashMode: true });
+  </script>
+</body>
+
+</html>

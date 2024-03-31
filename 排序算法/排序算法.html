@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>排序算法</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 10px;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        #output {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>排序算法</h1>
+    <input type="text" id="numbers" placeholder="输入一组数字（用英文逗号分隔）">
+    <br>
+    <select id="algorithm">
+        <option value="quickSort">快速排序</option>
+        <option value="bubbleSort">冒泡排序</option>
+        <option value="insertionSort">插入排序</option>
+        <option value="mergeSort">归并排序</option>
+        <option value="selectionSort">选择排序</option>
+        <option value="heapSort">堆排序</option>
+    </select>
+    <br>
+    <label for="iteration">指定迭代次数：</label>
+    <input type="number" id="iteration" min="0">
+    <br>
+    <button onclick="sortNumbers()">排序</button>
+    <div id="output"></div>
+
+    <script>
+        var iterationCount = 0;
+
+        function sortNumbers() {
+            var numbersInput = document.getElementById("numbers").value;
+            var algorithm = document.getElementById("algorithm").value;
+            var iteration = document.getElementById("iteration").value;
+            var numbers = numbersInput.split(",").map(Number);
+
+            if (algorithm === "quickSort") {
+                iterationCount = 0;
+                quickSort(numbers, 0, numbers.length - 1, iteration);
+            } else if (algorithm === "bubbleSort") {
+                numbers = bubbleSort(numbers);
+                document.getElementById("output").textContent = "冒泡排序结果：" + numbers.join(", ");
+            } else if (algorithm === "insertionSort") {
+                numbers = insertionSort(numbers);
+                document.getElementById("output").textContent = "插入排序结果：" + numbers.join(", ");
+            } else if (algorithm === "mergeSort") {
+                numbers = mergeSort(numbers);
+                document.getElementById("output").textContent = "归并排序结果：" + numbers.join(", ");
+            } else if (algorithm === "selectionSort") {
+                numbers = selectionSort(numbers);
+                document.getElementById("output").textContent = "选择排序结果：" + numbers.join(", ");
+            } else if (algorithm === "heapSort") {
+                numbers = heapSort(numbers);
+                document.getElementById("output").textContent = "堆排序结果：" + numbers.join(", ");
+            }
+        }
+
+
+
+        // 快速排序的实现
+        function quickSort(array, start, end, iteration) {
+            if (start >= end) {
+                return;
+            }
+
+            var pivotIndex = partition(array, start, end);
+
+            iterationCount++;
+            if (iterationCount <= iteration) {
+                document.getElementById("output").textContent = "第 " + iterationCount + " 趟快速排序结果：" + array.join(", ");
+            }
+
+            quickSort(array, start, pivotIndex - 1, iteration);
+            quickSort(array, pivotIndex + 1, end, iteration);
+        }
+
+        function partition(array, start, end) {
+            var pivot = array[start];
+            var i = start + 1;
+
+            for (var j = start + 1; j <= end; j++) {
+                if (array[j] < pivot) {
+                    swap(array, i, j);
+                    i++;
+                }
+            }
+
+            swap(array, start, i - 1);
+            return i - 1;
+        }
+
+        function swap(array, i, j) {
+            var temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+        }
+
+        function bubbleSort(array) {
+            var len = array.length;
+            for (var i = 0; i < len - 1; i++) {
+                for (var j = 0; j < len - 1 - i; j++) {
+                    if (array[j] > array[j + 1]) {
+                        var temp = array[j];
+                        array[j] = array[j + 1];
+                        array[j + 1] = temp;
+                    }
+                }
+            }
+            return array;
+        }
+
+        function insertionSort(array) {
+            for (var i = 1; i < array.length; i++) {
+                var key = array[i];
+                var j = i - 1;
+                while (j >= 0 && array[j] > key) {
+                    array[j + 1] = array[j];
+                    j = j - 1;
+                }
+                array[j + 1] = key;
+            }
+            return array;
+        }
+
+        function mergeSort(array) {
+            if (array.length <= 1) {
+                return array;
+            }
+            var mid = Math.floor(array.length / 2);
+            var left = mergeSort(array.slice(0, mid));
+            var right = mergeSort(array.slice(mid));
+            return merge(left, right);
+
+            function merge(left, right) {
+                var result = [];
+                while (left.length && right.length) {
+                    if (left[0] <= right[0]) {
+                        result.push(left.shift());
+                    } else {
+                        result.push(right.shift());
+                    }
+                }
+                while (left.length) result.push(left.shift());
+                while (right.length) result.push(right.shift());
+                return result;
+            }
+        }
+
+        function selectionSort(array) {
+            var len = array.length;
+            var minIndex, temp;
+            for (var i = 0; i < len - 1; i++) {
+                minIndex = i;
+                for (var j = i + 1; j < len; j++) {
+                    if (array[j] < array[minIndex]) {
+                        minIndex = j;
+                    }
+                }
+                temp = array[i];
+                array[i] = array[minIndex];
+                array[minIndex] = temp;
+            }
+            return array;
+        }
+
+        function heapSort(array) {
+            var len = array.length;
+            for (var i = Math.floor(len / 2) - 1; i >= 0; i--) {
+                heapify(array, len, i);
+            }
+            for (var i = len - 1; i >= 0; i--) {
+                var temp = array[0];
+                array[0] = array[i];
+                array[i] = temp;
+                heapify(array, i, 0);
+            }
+            return array;
+
+            function heapify(arr, len, i) {
+                var largest = i;
+                var left = 2 * i + 1;
+                var right = 2 * i + 2;
+                if (left < len && arr[left] > arr[largest]) {
+                    largest = left;
+                }
+                if (right < len && arr[right] > arr[largest]) {
+                    largest = right;
+                }
+                if (largest != i) {
+                    swap(arr, i, largest);
+                    heapify(arr, len, largest);
+                }
+            }
+
+            function swap(arr, index1, index2) {
+                var temp = arr[index1];
+                arr[index1] = arr[index2];
+                arr[index2] = temp;
+            }
+        }
+    </script>
+    <script>
+        !function (p) { "use strict"; !function (t) { var s = window, e = document, i = p, c = "".concat("https:" === e.location.protocol ? "https://" : "http://", "sdk.51.la/js-sdk-pro.min.js"), n = e.createElement("script"), r = e.getElementsByTagName("script")[0]; n.type = "text/javascript", n.setAttribute("charset", "UTF-8"), n.async = !0, n.src = c, n.id = "LA_COLLECT", i.d = n; var o = function () { s.LA.ids.push(i) }; s.LA ? s.LA.ids && o() : (s.LA = p, s.LA.ids = [], o()), r.parentNode.insertBefore(n, r) }() }({ id: "KIyLI1vHBwGjk0MP", ck: "KIyLI1vHBwGjk0MP", autoTrack: true, hashMode: true });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>最大连续子序列和计算器</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 10px;
+    }
+
+    input[type="text"],
+    select {
+      width: 100%;
+      margin: 10px auto;
+      padding: 10px;
+      font-size: 16px;
+      box-sizing: border-box;
+      /* 添加此行，确保输入框的宽度包括边框和内边距 */
+    }
+
+    #output {
+      width: 100%;
+      margin: 10px auto;
+      padding: 10px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      display: block;
+      /* 将按钮转换为块级元素，以便在移动设备上完全显示 */
+      width: 100%;
+      margin: 10px auto;
+      padding: 10px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+  <script>
+    function calculateMaxSubarraySum() {
+      var input = document.getElementById("sequence").value;
+      var sequence = input.split(",").map(Number);
+
+      var currentSum = 0;
+      var maxSum = -Infinity;
+
+      for (var i = 0; i < sequence.length; i++) {
+        currentSum = Math.max(sequence[i], currentSum + sequence[i]);
+        maxSum = Math.max(maxSum, currentSum);
+      }
+
+      document.getElementById("result").innerHTML = "序列的最大子序列和为: " + maxSum;
+    }
+  </script>
+</head>
+
+<body>
+  <h1>最大连续子序列和计算器</h1>
+
+  <label for="sequence">请输入整数序列,用英文逗号分隔：</label>
+  <input type="text" id="sequence">
+
+  <button onclick="calculateMaxSubarraySum()">计算</button>
+
+  <p id="result"></p>
+  <script>
+    !function (p) { "use strict"; !function (t) { var s = window, e = document, i = p, c = "".concat("https:" === e.location.protocol ? "https://" : "http://", "sdk.51.la/js-sdk-pro.min.js"), n = e.createElement("script"), r = e.getElementsByTagName("script")[0]; n.type = "text/javascript", n.setAttribute("charset", "UTF-8"), n.async = !0, n.src = c, n.id = "LA_COLLECT", i.d = n; var o = function () { s.LA.ids.push(i) }; s.LA ? s.LA.ids && o() : (s.LA = p, s.LA.ids = [], o()), r.parentNode.insertBefore(n, r) }() }({ id: "KIyLI1vHBwGjk0MP", ck: "KIyLI1vHBwGjk0MP", autoTrack: true, hashMode: true });
+  </script>
+</body>
+
+</html>

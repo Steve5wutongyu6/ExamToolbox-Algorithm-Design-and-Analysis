@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>找零钱问题</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    padding: 10px;
+  }
+
+  h1 {
+    text-align: center;
+  }
+
+  form {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  input[type="text"],
+  input[type="number"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+  }
+
+  button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  button[type="submit"]:hover {
+    background-color: #45a049;
+  }
+
+  #result {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+</style>
+
+<body>
+  <h1>找零钱问题</h1>
+  <form id="changeForm">
+    <label for="amountPaid">付款金额：</label>
+    <input type="number" id="amountPaid" required><br>
+
+    <label for="changeAmount">需要找零钱：</label>
+    <input type="number" id="changeAmount" required><br>
+
+    <label for="denominations">允许使用的钞票面值（用逗号分隔）：</label>
+    <input type="text" id="denominations" required><br>
+
+    <button type="submit">计算找零</button>
+  </form>
+
+  <div id="result"></div>
+
+  <script>
+    function calculateChange(event) {
+      event.preventDefault();
+
+      var amountPaid = parseFloat(document.getElementById('amountPaid').value);
+      var changeAmount = parseFloat(document.getElementById('changeAmount').value);
+      var denominationsInput = document.getElementById('denominations').value;
+
+      if (isNaN(amountPaid) || isNaN(changeAmount)) {
+        alert('请输入有效的金额');
+        return;
+      }
+
+      var denominations = denominationsInput.split(',').map(function (item) {
+        return parseInt(item, 10);
+      });
+
+      var result = findChange(amountPaid, changeAmount, denominations);
+
+      document.getElementById('result').innerHTML = '找零方式为：' + result.join(', ');
+    }
+
+    function findChange(amountPaid, changeAmount, denominations) {
+      var result = [];
+      var index = denominations.length - 1;
+
+      while (changeAmount > 0) {
+        if (changeAmount >= denominations[index]) {
+          result.push(denominations[index]);
+          changeAmount -= denominations[index];
+        } else {
+          index--;
+        }
+      }
+
+      return result;
+    }
+
+    document.getElementById('changeForm').addEventListener('submit', calculateChange);
+  </script>
+  <script>
+    !function (p) { "use strict"; !function (t) { var s = window, e = document, i = p, c = "".concat("https:" === e.location.protocol ? "https://" : "http://", "sdk.51.la/js-sdk-pro.min.js"), n = e.createElement("script"), r = e.getElementsByTagName("script")[0]; n.type = "text/javascript", n.setAttribute("charset", "UTF-8"), n.async = !0, n.src = c, n.id = "LA_COLLECT", i.d = n; var o = function () { s.LA.ids.push(i) }; s.LA ? s.LA.ids && o() : (s.LA = p, s.LA.ids = [], o()), r.parentNode.insertBefore(n, r) }() }({ id: "KIyLI1vHBwGjk0MP", ck: "KIyLI1vHBwGjk0MP", autoTrack: true, hashMode: true });
+  </script>
+</body>
+
+</html>

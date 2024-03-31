@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>树</title>
+  <style>
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 50px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>画树</h1>
+
+    <label for="data-input">输入数据:</label>
+    <input type="text" id="data-input"><br>
+
+    <label for="tree-type">选择树的类型:</label>
+    <select id="tree-type">
+      <option value="normal">普通树</option>
+      <option value="binary-full">二叉树-满二叉树</option>
+      <option value="binary-complete">二叉树-完全二叉树</option>
+    </select><br>
+
+    <button onclick="generateTree()">生成树</button>
+
+    <h3>生成的树:</h3>
+    <pre id="output"></pre>
+  </div>
+
+  <script>
+    function generateTree() {
+      var inputData = document.getElementById("data-input").value;
+      var treeType = document.getElementById("tree-type").value;
+      var data = inputData.split(",").map(Number);
+      var output = document.getElementById("output");
+
+      // 生成树的逻辑
+      var tree = generateMinimumSpanningTree(data, treeType);
+
+      output.textContent = JSON.stringify(tree);
+    }
+
+    function generateMinimumSpanningTree(data, treeType) {
+      // 在这里实现生成树的算法
+      // 根据树的类型和输入数据进行相应的处理
+
+      // 这里只是一个示例，将输入数据作为树的节点返回
+      return data;
+    }
+  </script>
+  <script>
+    !function (p) { "use strict"; !function (t) { var s = window, e = document, i = p, c = "".concat("https:" === e.location.protocol ? "https://" : "http://", "sdk.51.la/js-sdk-pro.min.js"), n = e.createElement("script"), r = e.getElementsByTagName("script")[0]; n.type = "text/javascript", n.setAttribute("charset", "UTF-8"), n.async = !0, n.src = c, n.id = "LA_COLLECT", i.d = n; var o = function () { s.LA.ids.push(i) }; s.LA ? s.LA.ids && o() : (s.LA = p, s.LA.ids = [], o()), r.parentNode.insertBefore(n, r) }() }({ id: "KIyLI1vHBwGjk0MP", ck: "KIyLI1vHBwGjk0MP", autoTrack: true, hashMode: true });
+  </script>
+</body>
+
+</html>

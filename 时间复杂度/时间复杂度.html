@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>主定理计算时间复杂度</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        padding: 10px;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    input[type="number"],
+    input[type="text"] {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+    }
+
+    button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 100%;
+    }
+
+    button:hover {
+        background-color: #45a049;
+    }
+
+    #result {
+        margin-top: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+</style>
+
+<body>
+    <h1>主定理计算时间复杂度</h1>
+    <label for="a">请输入a：</label>
+    <input type="number" id="a" min="1" step="1">
+    <br>
+    <label for="b">请输入b：</label>
+    <input type="text" id="b">
+    <br>
+    <button type="submit" onclick="calculateTimeComplexity()">计算</button>
+    <div id="result"></div>
+
+    <script>
+        function calculateTimeComplexity() {
+            var a = parseInt(document.getElementById("a").value);
+            var b = parseFraction(document.getElementById("b").value);
+
+            var resultElement = document.getElementById("result");
+            resultElement.innerHTML = "";
+
+            if (isNaN(a) || isNaN(b) || a < 1 || b <= 1) {
+                resultElement.innerHTML = "请输入有效的参数。";
+                return;
+            }
+
+            var logba = Math.log(a) / Math.log(b);
+            var epsilon = 0.01; // 用于浮点数的近似判断
+
+            if (logba < epsilon) {
+                // 当 a = 1 时，log_b(a) = 0，这符合主定理的第二种情况
+                resultElement.innerHTML += "T(n) = θ(log n)";
+                resultElement.innerHTML += "<br>";
+                resultElement.innerHTML += "根据条件2，时间复杂度为：θ(log n)";
+            } else if (logba - Math.floor(logba) < epsilon) {
+                // 当 f(n) = O(n^(log_b(a)) - ε)，即 f(n) 较小
+                resultElement.innerHTML += "T(n) = θ(n<sup>" + logba.toFixed(2) + "</sup>)";
+                resultElement.innerHTML += "<br>";
+                resultElement.innerHTML += "根据条件1，时间复杂度为：θ(n<sup>" + logba.toFixed(2) + "</sup>)";
+            } else {
+                // 当 f(n) = O(n^(log_b(a)) + ε)，即 f(n) 较大
+                resultElement.innerHTML += "T(n) = θ(f(n) log n)";
+                resultElement.innerHTML += "<br>";
+                resultElement.innerHTML += "根据条件3，时间复杂度为：θ(f(n) log n)";
+            }
+        }
+        function parseFraction(value) {
+            // 修改parseFraction函数，使其能够处理分数输入
+            var parts = value.split("/");
+            if (parts.length === 2) {
+                var numerator = parseFloat(parts[0].trim());
+                var denominator = parseFloat(parts[1].trim());
+                if (!isNaN(numerator) && !isNaN(denominator) && denominator !== 0) {
+                    return numerator / denominator;
+                } else {
+                    return NaN; // 分子或分母不是数字，或者分母为0，返回NaN
+                }
+            } else {
+                return parseFloat(value); // 不是分数的情况下直接转换为浮点数
+            }
+        }
+
+    </script>
+</body>
+
+</html>
